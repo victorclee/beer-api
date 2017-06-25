@@ -1,17 +1,30 @@
 <div id="app">
-<div>
-  <h2>Add a beer: </h2>
   <div>
-    Name: <input type="text" v-model="newBeerName">
-    Style: <input type="text" v-model="newBeerStyle">
-    Alcohol: <input type="text" v-model="newBeerAlcohol">
-    <button v-on:click="addBeer">Add Beer</button>
+    <h2>Add a beer: </h2>
+    <ul>
+      <li v-for="error in errors">{{error}}</li>
+    </ul>
+    <div>
+      Name: <input type="text" v-model="newBeerName"><br>
+      Style: <input type="text" v-model="newBeerStyle"><br>
+      Alcohol: <input type="text" v-model="newBeerAlcohol"><br>
+      <button v-on:click="addBeer()">Add Beer</button>
+    </div>
   </div>
-</div>
-  <div v-for="beer in beers">
-    <h2>{{ beer.name }}</h2>
-    <h2>{{ beer.style }}</h2>
-    <h2>{{ beer.alcohol }}</h2>
-    <br>
+
+  <datalist id="names">
+    <option v-for="beer in beers">{{ beer.name }}</option>
+  </datalist>
+
+  <div>
+    Search by Name: <input type="text" v-model="nameFilter" list="names">
   </div>
+  <transition-group name="slide-right">
+    <div v-for="beer in beers" v-if="isValidBeer(beer)" v-bind:key="beer.id">
+      <h2>{{ beer.name }}</h2>
+      <h3>{{ beer.style }}</h3>
+      <h3>{{ beer.alcohol }}</h3>
+      <button v-on:click="deleteBeer(beer)">Delete this beer</button>
+    </div>
+  </transition-group>
 </div>
